@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
-
 <head>
    <title>Shopping Cart</title>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
-   <link href="style.css" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
    <section>
@@ -25,11 +23,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button id="minusBtn2" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input id="caseNumber2" type="text" class="form-control text-center" value="1">
-                           <button id="plusBtn2" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button onclick="clickHendelProduct('phone', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="phone-count" type="text" class="form-control text-center" value="1">
+                           <button onclick="clickHendelProduct('phone', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5 id="caseCount2">$1219</h5>
+                        <h5 id="phone-total">$1219</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +41,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button id="minusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input id="caseNumber" type="text" class="form-control text-center" value="1">
-                           <button id="plusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button onclick=" clickHendelProduct('case', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="case-count" type="text" class="form-control text-center" value="1">
+                           <button onclick="clickHendelProduct('case', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5 id="caseCount">$59</h5>
+                        <h5 id="case-total">$59</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +62,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5 id="total-value">$1,278</h5>
+                        <h5 id="tex-amoumt">$0</h5>
+                        <h5 id="gred-total">$1,278</h5>
                      </div>
                   </div>
                </div>
@@ -78,40 +76,131 @@
       </div>
    </section>
    <script>
-      document.getElementById("plusBtn").addEventListener("click", function(){
-         const caseInput = document.getElementById("caseNumber");
-         const caseCount = parseInt(caseInput.value);
-         const caseNewCount = caseCount + 1;
-         caseInput.value = caseNewCount;
-         const caseTotal = caseNewCount * 59;
-         document.getElementById("caseCount").innerText = "$" + caseTotal;
-      })
-      document.getElementById("minusBtn").addEventListener("click", function(){
-         const caseInput = document.getElementById("caseNumber");
-         const caseCount = parseInt(caseInput.value);
-         const caseNewCount = caseCount - 1;
-         caseInput.value = caseNewCount;
-         const caseTotal = caseNewCount * 59;
-         document.getElementById("caseCount").innerText = "$" + caseTotal;
+         function clickHendelProduct(product, isIncrease){
+         const productInput = document.getElementById(product + "-count");
+         const productCount = parseInt(productInput.value);
+         let productNewCount = productCount;
+           if(isIncrease == true){
+            productNewCount = productCount + 1;
+           }
+           if(isIncrease == false && productCount > 0){
+            productNewCount = productCount - 1;
+           }
+           productInput.value = productNewCount;
+         let productTotal = 0;
+         if(product == "case"){
+            productTotal = productNewCount * 59;
+         }
+         if(product == "phone"){
+            productTotal = productNewCount * 1218;
+         }
+         document.getElementById(product + "-total").innerText = "$" + productTotal;
+         caculateTotal();
+        }
 
-      })
 
-      document.getElementById("plusBtn2").addEventListener("click", function(){
-         const caseInput = document.getElementById("caseNumber2");
-         const caseCount = parseInt(caseInput.value);
-         const caseNewCount = caseCount + 1;
-         caseInput.value = caseNewCount;
-         const caseTotal = caseNewCount * 1219;
-         document.getElementById("caseCount2").innerText = "$" + caseTotal;
-      })
-      document.getElementById("minusBtn2").addEventListener("click", function(){
-         const caseInput = document.getElementById("caseNumber2");
-         const caseCount = parseInt(caseInput.value);
-         const caseNewCount = caseCount - 1;
-         caseInput.value = caseNewCount;
-         const caseTotal = caseNewCount * 1219;
-         document.getElementById("caseCount2").innerText = "$" + caseTotal;
-      })
+        function caculateTotal(){
+           const caseInput = document.getElementById("case-count");
+           const caseValue = parseInt(caseInput.value);
+           const phoneInput = document.getElementById("phone-count");
+           const phoneValue = parseInt(phoneInput.value);
+           const totalValue = caseValue * 59 + phoneValue * 1218;
+         document.getElementById("total-value").innerText = "$" + totalValue;
+
+            const tex = Math.round(totalValue * 0.1);
+            document.getElementById("tex-amoumt").innerText = "$" + tex;
+
+            const gredTotal = totalValue + tex;
+            document.getElementById("gred-total").innerText = "$" + gredTotal;
+        }
+
+
+        // this is first part nomeral code discussetion here 
+      //   function clickSecoundpart(isIncrease){
+      //    const caseInput = document.getElementById("caseNumber2");
+      //    const caseCount = parseInt(caseInput.value);
+      //    let caseNewCount = caseCount;
+      //      if(isIncrease == true){
+      //         caseNewCount = caseCount + 1;
+      //      }
+      //      if(isIncrease == false && caseCount > 0){
+      //         caseNewCount = caseCount - 1;
+      //      }
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal = caseNewCount * 1219;
+      //    document.getElementById("caseCount2").innerText = "$" + caseTotal;
+      //   }
+
+
+      //     // this is secund part hard code discussetion here 
+      //    function clickFirstpart(isIncrease){
+      //    const caseInput = document.getElementById("caseNumber");
+      //    const caseCount = parseInt(caseInput.value);
+      //       let caseNewCount = caseCount;
+      //      if(isIncrease == true){
+      //         caseNewCount = caseCount + 1;
+      //      }
+      //      if(isIncrease == false && caseCount > 0){
+      //         caseNewCount = caseCount - 1;
+      //      }
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal = caseNewCount * 59;
+      //    document.getElementById("caseCount").innerText = "$" + caseTotal;
+      //    }
+
+
+      // this is EventListener and ID here 
+      // document.getElementById("plusBtn2").addEventListener("click", function(){
+      //    clickSecoundpart(true)
+      // })
+      // document.getElementById("minusBtn2").addEventListener("click", function(){
+      //    clickSecoundpart(false)
+      // })
+      // document.getElementById("plusBtn").addEventListener("click", function(){
+      //       clickFirstpart(true)
+      // })
+      // document.getElementById("minusBtn").addEventListener("click", function(){
+      //       clickFirstpart(false)
+      // })
+
+
+      // this is first part nomeral code discussetion here 
+      // document.getElementById("plusBtn2").addEventListener("click", function(){
+      //    const caseInput = document.getElementById("caseNumber2");
+      //    const caseCount = parseInt(caseInput.value);
+      //    const caseNewCount = caseCount + 1;
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal = caseNewCount * 1219;
+      //    document.getElementById("caseCount2").innerText = "$" + caseTotal;
+      // })
+      // document.getElementById("minusBtn2").addEventListener("click", function(){
+      //    const caseInput = document.getElementById("caseNumber2");
+      //    const caseCount = parseInt(caseInput.value);
+      //    const caseNewCount = caseCount - 1;
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal2 = caseNewCount * 1219;
+      //    document.getElementById("caseCount2").innerText = "$" + caseTotal2;
+      // })
+
+
+      // this is  secund part Nomral code discussetion here 
+      //       document.getElementById("plusBtn").addEventListener("click", function(){
+      //    const caseInput = document.getElementById("caseNumber");
+      //    const caseCount = parseInt(caseInput.value);
+      //    const caseNewCount = caseCount + 1;
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal = caseNewCount * 59;
+      //    document.getElementById("caseCount").innerText = "$" + caseTotal;
+      // })
+      // document.getElementById("minusBtn").addEventListener("click", function(){
+      //    const caseInput = document.getElementById("caseNumber");
+      //    const caseCount = parseInt(caseInput.value);
+      //    const caseNewCount = caseCount - 1;
+      //    caseInput.value = caseNewCount;
+      //    const caseTotal = caseNewCount * 59;
+      //    document.getElementById("caseCount").innerText = "$" + caseTotal;
+      // })
+      
    </script>
 </body>
 
